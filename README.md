@@ -1,30 +1,36 @@
 # course-group-dev-web
 
-研究团队网站，使用 Vue 3、Django 5.2 和 MySQL 8。
+## 基本介绍
 
-## 仓库内容
+课题组展示与内容管理网站，使用 Vue 3、Django 5.2 和 MySQL 8，支持桌面和移动端访问。
 
-只包含应用源码和配置。SQL 备份、数据库内容、真实环境变量、上传媒体、静态收集文件、构建产物、依赖目录和虚拟环境均不上传。页面联系邮箱、地址与部署域名已替换为占位内容，需要自行配置。
+## 如何使用
 
-## 本地开发
+准备 Python 3.12、Node.js 和 MySQL 8，然后克隆项目：
 
-后端使用 `course_group_api` 的独立 Python 3.12 环境。依赖通过该环境的解释器安装：
+```powershell
+git clone git@github.com:China6577/course-group-dev-web.git
+cd course-group-dev-web
+```
+
+### 启动后端
+
+在 MySQL 中创建空数据库 `course_group_db`。参考 `course_group_api/.env.example`，在当前终端设置数据库连接环境变量和 `DJANGO_SECRET_KEY`；该文件不会自动加载。
 
 ```powershell
 cd course_group_api
+py -3.12 -m venv .venv
 .\.venv\Scripts\python.exe -m pip install -r requirements.txt
-```
-
-参考 `course_group_api/.env.example` 设置当前终端的 `DB_HOST`、`DB_PORT`、`DB_NAME`、`DB_USER`、`DB_PASSWORD` 和 `DJANGO_SECRET_KEY` 环境变量。示例文件不会自动加载；真实配置不要提交。
-
-先创建空的 MySQL 数据库，再初始化表结构并启动后端：
-
-```powershell
 .\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py createsuperuser
 .\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
 ```
 
-另开终端启动前端：
+已有 `.venv` 时直接复用，跳过创建环境。访问 `http://127.0.0.1:8000/admin/`，使用创建的管理员账号录入内容。
+
+### 启动前端
+
+另开终端，在项目根目录执行：
 
 ```powershell
 cd course_group_vue
@@ -32,10 +38,14 @@ npm ci
 npm run serve -- --host 127.0.0.1 --port 8080
 ```
 
-访问 `http://127.0.0.1:8080/`，前端默认代理到后端 `http://127.0.0.1:8000/`。
+访问 `http://127.0.0.1:8080/`。前端默认连接 8000 端口的后端。
 
-可通过 `manage.py createsuperuser` 创建自己的管理员并录入内容。仓库不包含现有用户、密码、成员信息或数据库备份。
+## 具体功能
 
-## Docker 配置
-
-现有 `docker-compose.yml` 引用了未提交的私有环境文件，也保留了原有资源名称。使用前须自行准备配置，并按项目命名要求统一为 `course-group-dev-web`，检查已有数据卷的迁移方式。上传操作没有修改这些外部资源标识，也没有启动容器。
+- 课题组介绍：展示团队简介和主要研究领域。
+- 研究方向：展示研究领域及详细介绍。
+- 团队成员：按成员类别展示，查看个人资料及毕业去向。
+- 学术成果：按论文类型、年份和关键词筛选，查看摘要、论文链接和 BibTeX 引用。
+- 合作伙伴：展示合作机构介绍和网站链接。
+- 加入我们：展示招募说明和联系信息，可修改页面中的占位邮箱与地址。
+- 后台管理：管理研究方向、成员、论文和合作伙伴，设置展示顺序。
