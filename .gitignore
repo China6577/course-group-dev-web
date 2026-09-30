@@ -1,0 +1,43 @@
+.idea/
+.venv/
+__pycache__/
+node_modules/
+instruction.txt
+env/
+requirement/
+
+# Credentials and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+id_rsa*
+id_ed25519*
+.ssh/
+
+# Database contents, uploads, generated files, and logs
+*.sql
+*.sql.*
+*.dump
+*.sqlite*
+*.db
+media/
+uploads/
+static/
+dist/
+build/
+coverage/
+*.log
+logs/
+*.bak
+*.zip
+*.tar
+*.gz
+
+# Local tooling
+.vscode/
+.DS_Store
+Thumbs.db

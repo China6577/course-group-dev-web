@@ -1,0 +1,74 @@
+name: course-group
+
+services:
+  mysql:
+    container_name: course-group-mysql
+    image: mysql:8.0
+    restart: unless-stopped
+    expose:
+      - 3306
+    env_file: ./course_group_api/env/mysql/.env
+    volumes:
+      - mysql-data:/var/lib/mysql
+    logging:
+      options:
+        max-size: 100m
+        max-file: 3
+        compress: 1
+    networks:
+      - course-group-net
+
+  api:
+    container_name: course-group-api
+    build: ./course_group_api
+    image: course-group-api:v1.0
+    restart: unless-stopped
+    expose:
+      - 8000
+    volumes:
+      - media-data:/app/media
+      - static-data:/app/static
+    env_file: ./course_group_api/env/django/.env
+    logging:
+      options:
+        max-size: 100m
+        max-file: 3
+        compress: 1
+    networks:
+      - course-group-net
+    depends_on:
+      - mysql
+
+  nginx:
+    container_name: course-group-nginx
+    image: nginx:1.29.4
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - nginx-conf-data:/etc/nginx
+      - nginx-html-data:/usr/share/nginx/html
+      - media-data:/app/media
+      - static-data:/app/static
+    logging:
+      options:
+        max-size: 100m
+        max-file: 3
+        compress: 1
+    environment:
+      - TZ=Asia/Shanghai
+    networks:
+      - course-group-net
+    depends_on:
+      - api
+
+volumes:
+  mysql-data:
+  nginx-conf-data:
+  nginx-html-data:
+  media-data:
+  static-data:
+
+networks:
+  course-group-net:
+    driver: bridge

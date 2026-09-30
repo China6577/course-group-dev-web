@@ -1,0 +1,61 @@
+# ===================== Python 编译缓存与虚拟环境 =====================
+# 排除 Python 编译文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 排除虚拟环境（你的是 .venv，必须排除，否则镜像体积暴增）
+.venv/
+venv/
+env/
+ENV/
+
+# ===================== 敏感配置文件 =====================
+# 排除环境变量文件（绝对不能打包进镜像，避免泄露敏感信息）
+env/django/.env
+env/mysql/.env
+.env.*
+.env.local
+.env.prod
+
+# ===================== 日志与临时文件 =====================
+# 排除日志文件（容器内会重新创建 logs 目录）
+*.log
+logs/
+
+# 排除临时/缓存文件
+tmp/
+cache/
+
+# ===================== 媒体与静态文件 =====================
+# media 用数据卷存储，不打包进镜像
+media/
+
+# staticfiles 会在容器内 collectstatic 生成，不打包宿主机文件
+staticfiles/
+
+# ===================== 开发/IDE 无关文件 =====================
+# Git 版本控制文件
+.git/
+.gitignore
+
+# IDE/编辑器缓存（VSCode、PyCharm 等）
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store  # Mac 系统垃圾文件
+
+# 测试文件（如果有 tests 目录，也排除）
+tests/
+test_*.py
+
+.env
+*.sql
+*.sql.*
+*.dump
+*.sqlite*
+*.db
+static/
+uploads/
