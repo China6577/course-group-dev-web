@@ -21,7 +21,7 @@ cd course_group_api
 
 ```powershell
 .\.venv\Scripts\python.exe manage.py migrate
-.\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:9000
+.\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8000
 ```
 
 另开终端启动前端：
@@ -29,11 +29,10 @@ cd course_group_api
 ```powershell
 cd course_group_vue
 npm ci
-$env:COURSE_GROUP_API_TARGET = 'http://127.0.0.1:9000'
-npm run serve -- --host 127.0.0.1 --port 9001
+npm run serve -- --host 127.0.0.1 --port 8080
 ```
 
-访问 `http://127.0.0.1:9001/`。9000 和 9001 用于避开本机 Windows 保留的默认端口范围。
+访问 `http://127.0.0.1:8080/`，前端默认代理到后端 `http://127.0.0.1:8000/`。
 
 可通过 `manage.py createsuperuser` 创建自己的管理员并录入内容。仓库不包含现有用户、密码、成员信息或数据库备份。
 
